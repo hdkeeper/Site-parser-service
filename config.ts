@@ -1,1 +1,1 @@
-export const listenPort = 8080;
+export const listenPort = process.env.API_PORT || 8080;

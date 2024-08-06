@@ -1,7 +1,9 @@
 import path from 'path';
+import { PassThrough } from 'stream';
 import PDFDocument from 'pdfkit';
 
-export function createReport(output: NodeJS.WritableStream, title: string, stats: string[]) {
+export function createReport(title: string, stats: string[]): PassThrough {
+    const output = new PassThrough();
     const doc = new PDFDocument({ size: 'A4' });
     doc.pipe(output);
     doc.registerFont('default', path.join(__dirname, '../fonts/frabk.ttf'));
@@ -15,4 +17,5 @@ export function createReport(output: NodeJS.WritableStream, title: string, stats
     stats.forEach((word, i) => doc.text(`${i+1}. ${word}`));
     
     doc.end();
+    return output;
 }
